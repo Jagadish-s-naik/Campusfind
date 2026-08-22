@@ -4,7 +4,7 @@
 
 ---
 
-## 🎨 Visual Design System (Starbucks Inspired)
+## 🎨 Visual Design System 
 
 This application has been crafted adhering strictly to the **Starbucks Design System Specification** (`docs/DESIGN-starbucks.md`):
 
