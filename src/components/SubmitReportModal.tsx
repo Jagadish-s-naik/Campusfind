@@ -56,6 +56,8 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
     reader.readAsDataURL(file);
   };
 
+  const maxDateTime = new Date().toISOString().slice(0, 16);
+
   const handleNextStep = () => {
     if (step === 1) {
       if (!photoBase64) {
@@ -67,6 +69,10 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
     } else if (step === 2) {
       if (!description.trim() || description.length < 10) {
         setErrorMsg('Please enter a descriptive summary of the item (min 10 characters).');
+        return;
+      }
+      if (new Date(dateTime) > new Date()) {
+        setErrorMsg('Date and time cannot be in the future. Please select a past or current date.');
         return;
       }
       setErrorMsg('');
@@ -320,6 +326,7 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
                 <input
                   type="datetime-local"
                   value={dateTime}
+                  max={maxDateTime}
                   onChange={(e) => setDateTime(e.target.value)}
                   onClick={(e) => {
                     if ('showPicker' in e.currentTarget) {
