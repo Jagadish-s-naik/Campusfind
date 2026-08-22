@@ -3,7 +3,7 @@ import { CAMPUS_LOCATIONS } from '../types';
 import { extractStructuredAttributes, generateItemEmbedding } from '../services/ai';
 import { saveReport } from '../services/db';
 import { triggerMatchingEngine } from '../services/matching';
-import { sanitizeInput, validateImageFile } from '../utils/security';
+import { sanitizeInput, validateImageFileSecurely, sanitizeBase64Image } from '../utils/security';
 import { X, Upload, Sparkles, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useState } from 'react';
@@ -35,11 +35,12 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const validation = validateImageFile(file);
+    // Secure binary header & MIME-type validation
+    const validation = await validateImageFileSecurely(file);
     if (!validation.valid) {
       setErrorMsg(validation.error || 'Invalid image file upload.');
       return;
@@ -47,7 +48,8 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPhotoBase64(reader.result as string);
+      const sanitizedPayload = sanitizeBase64Image(reader.result as string);
+      setPhotoBase64(sanitizedPayload);
       setErrorMsg('');
     };
     reader.readAsDataURL(file);
