@@ -28,6 +28,7 @@ export interface ItemReport {
   type: ReportType;
   reporterName: string;
   contactInfo: string;
+  studentCampusId?: string;
   photoBase64: string;
   description: string;
   location: CampusLocation;

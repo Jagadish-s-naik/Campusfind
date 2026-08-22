@@ -215,7 +215,14 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
                   <p className="text-slate-500 uppercase tracking-wider text-[10px] font-bold mb-1">
                     Lost Reporter Details
                   </p>
-                  <p className="font-extrabold text-slate-900">{lostReport.reporterName}</p>
+                  <p className="font-extrabold text-slate-900">
+                    {lostReport.reporterName}
+                    {lostReport.studentCampusId && (
+                      <span className="ml-1.5 text-[10px] px-1.5 py-0.5 rounded bg-[#DCEEE5] text-[#1E5F4A]">
+                        ID: {lostReport.studentCampusId}
+                      </span>
+                    )}
+                  </p>
                   <p className="text-[#1E5F4A] font-bold mt-0.5 flex items-center gap-1">
                     <Mail className="w-3 h-3" /> {lostReport.contactInfo}
                   </p>
@@ -224,7 +231,14 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
                   <p className="text-slate-500 uppercase tracking-wider text-[10px] font-bold mb-1">
                     Found Reporter Details
                   </p>
-                  <p className="font-extrabold text-slate-900">{foundReport.reporterName}</p>
+                  <p className="font-extrabold text-slate-900">
+                    {foundReport.reporterName}
+                    {foundReport.studentCampusId && (
+                      <span className="ml-1.5 text-[10px] px-1.5 py-0.5 rounded bg-[#DCEEE5] text-[#1E5F4A]">
+                        ID: {foundReport.studentCampusId}
+                      </span>
+                    )}
+                  </p>
                   <p className="text-[#1E5F4A] font-bold mt-0.5 flex items-center gap-1">
                     <Phone className="w-3 h-3" /> {foundReport.contactInfo}
                   </p>

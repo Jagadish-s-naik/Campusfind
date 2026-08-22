@@ -94,6 +94,11 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({ report, on
             <p className="font-extrabold text-slate-900 flex items-center gap-1.5">
               <User className="w-4 h-4 text-[#2C8C63]" />
               {report.reporterName}
+              {report.studentCampusId && (
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-[#DCEEE5] text-[#1E5F4A]">
+                  ID: {report.studentCampusId}
+                </span>
+              )}
             </p>
             <p className="text-[#1E5F4A] font-bold pl-5 flex items-center gap-1">
               <Phone className="w-3 h-3" /> {report.contactInfo}

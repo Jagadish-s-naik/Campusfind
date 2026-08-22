@@ -22,6 +22,7 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [type, setType] = useState<'lost' | 'found'>('lost');
   const [reporterName, setReporterName] = useState('');
+  const [studentCampusId, setStudentCampusId] = useState('');
   const [contactInfo, setContactInfo] = useState('');
   const [location, setLocation] = useState<CampusLocation>('Cafe(ground Floor)');
   const [locationDetails, setLocationDetails] = useState('');
@@ -84,6 +85,7 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
     setStatusMessage('Analyzing photo & description with Gemini Multimodal AI...');
 
     const cleanReporterName = sanitizeInput(reporterName);
+    const cleanStudentCampusId = sanitizeInput(studentCampusId);
     const cleanContactInfo = sanitizeInput(contactInfo);
     const cleanDescription = sanitizeInput(description);
     const cleanLocationDetails = sanitizeInput(locationDetails);
@@ -103,6 +105,7 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
         id: `report_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
         type,
         reporterName: cleanReporterName,
+        studentCampusId: cleanStudentCampusId || undefined,
         contactInfo: cleanContactInfo,
         photoBase64,
         description: cleanDescription,
@@ -138,6 +141,7 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
     setStep(1);
     setType('lost');
     setReporterName('');
+    setStudentCampusId('');
     setContactInfo('');
     setLocation('Cafe(ground Floor)');
     setLocationDetails('');
@@ -367,16 +371,29 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
               </div>
               <div>
                 <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Contact Info (Email/Phone) *
+                  Student Campus ID (Optional)
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. alex@student.edu | 555-0192"
-                  value={contactInfo}
-                  onChange={(e) => setContactInfo(e.target.value)}
+                  placeholder="e.g. STU-2024-8891"
+                  value={studentCampusId}
+                  onChange={(e) => setStudentCampusId(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-lg sb-input text-sm text-slate-900 placeholder-slate-400"
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1.5">
+                Contact Info (Email/Phone) *
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. alex@student.edu | 555-0192"
+                value={contactInfo}
+                onChange={(e) => setContactInfo(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-lg sb-input text-sm text-slate-900 placeholder-slate-400"
+              />
             </div>
 
             {/* Review Summary Card */}
@@ -388,6 +405,9 @@ export const SubmitReportModal: React.FC<SubmitReportModalProps> = ({
                 <div><span className="text-slate-500">Type:</span> <strong className="uppercase">{type}</strong></div>
                 <div><span className="text-slate-500">Location:</span> <strong>{location}</strong></div>
                 <div><span className="text-slate-500">Reporter:</span> <strong>{reporterName || 'Unspecified'}</strong></div>
+                {studentCampusId && (
+                  <div><span className="text-slate-500">Campus ID:</span> <strong>{studentCampusId}</strong></div>
+                )}
                 <div><span className="text-slate-500">Time:</span> <strong>{new Date(dateTime).toLocaleTimeString()}</strong></div>
               </div>
               <p className="text-xs text-slate-600 italic pt-1">"{description}"</p>
