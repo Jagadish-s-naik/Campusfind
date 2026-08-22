@@ -34,7 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
               <div>
                 <span className="font-heading font-extrabold text-xl text-[rgba(0,0,0,0.87)] tracking-tight flex items-center gap-2">
-                  CampusFind <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#DCEEE5] text-[#1E5F4A] font-bold uppercase">Gemini AI</span>
+                  CampusFind
                 </span>
                 <p className="text-xs text-[rgba(0,0,0,0.58)] font-sans hidden sm:block">Smart Campus Lost & Found</p>
               </div>
