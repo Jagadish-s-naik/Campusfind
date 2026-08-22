@@ -17,14 +17,14 @@ export const MatchInboxView: React.FC<MatchInboxViewProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900">
+      {/* Header Banner */}
+      <div className="rounded-3xl p-6 sm:p-8 bg-[#16332B] text-white">
         <div className="max-w-2xl space-y-2">
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1.5 w-fit">
+          <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-[#DCEEE5] text-[#1E5F4A] flex items-center gap-1.5 w-fit">
             <Sparkles className="w-3.5 h-3.5" /> AI Confidence Triage
           </span>
-          <h1 className="text-3xl font-heading font-bold text-white">Confidence-Based Match Inbox</h1>
-          <p className="text-sm text-slate-400">
+          <h1 className="text-3xl font-heading font-extrabold text-white">Confidence-Based Match Inbox</h1>
+          <p className="text-sm text-[#DCEEE5]/80">
             Potential matches identified by Gemini pairwise comparison. Evaluated based on item attributes, visual features, location proximity, and timeframe.
           </p>
         </div>
@@ -39,32 +39,32 @@ export const MatchInboxView: React.FC<MatchInboxViewProps> = ({
 
             if (!lostReport || !foundReport) return null;
 
-            const isHigh = match.confidenceScore >= 80;
-            const isMedium = match.confidenceScore >= 60 && match.confidenceScore < 80;
+            const isHigh = match.confidenceScore >= 75;
+            const isMedium = match.confidenceScore >= 40 && match.confidenceScore < 75;
 
             return (
               <div
                 key={match.id}
                 onClick={() => onOpenMatchDetail(match, lostReport, foundReport)}
-                className="glass-card rounded-2xl p-5 border border-slate-800 hover:border-amber-500/40 transition-all duration-200 cursor-pointer space-y-4 group"
+                className="sb-card sb-card-hover p-5 cursor-pointer space-y-4 bg-white"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-3">
-                    {/* Confidence Score Pill */}
+                    {/* Confidence Score Pill (Success >=75%, Warning 40-74%, Error <40%) */}
                     <div
-                      className={`px-3 py-1.5 rounded-xl font-heading font-bold text-sm flex items-center gap-1.5 ${
+                      className={`px-3 py-1.5 rounded-full font-heading font-extrabold text-sm flex items-center gap-1.5 ${
                         isHigh
-                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                          ? 'bg-[#2C8C63] text-white'
                           : isMedium
-                          ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                          : 'bg-slate-800 text-slate-300'
+                          ? 'bg-[#E0A61B] text-slate-950'
+                          : 'bg-[#C4291F] text-white'
                       }`}
                     >
                       <Sparkles className="w-4 h-4" />
                       {match.confidenceScore}% Confidence
                     </div>
 
-                    <span className="text-xs text-slate-400 font-mono">
+                    <span className="text-xs text-slate-500 font-medium">
                       Matched {new Date(match.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
@@ -72,17 +72,17 @@ export const MatchInboxView: React.FC<MatchInboxViewProps> = ({
                   {/* Status Indicator */}
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-xs px-2.5 py-0.5 rounded-full font-semibold uppercase ${
+                      className={`text-xs px-3 py-0.5 rounded-full font-extrabold uppercase ${
                         match.status === 'confirmed'
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          ? 'bg-[#DCEEE5] text-[#1E5F4A]'
                           : match.status === 'dismissed'
-                          ? 'bg-slate-800 text-slate-500'
-                          : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                          ? 'bg-slate-100 text-slate-400'
+                          : 'bg-amber-50 text-[#E0A61B]'
                       }`}
                     >
                       {match.status}
                     </span>
-                    <button className="text-xs font-semibold text-amber-400 group-hover:text-amber-300 flex items-center gap-1 pl-2">
+                    <button className="text-xs font-extrabold text-[#1E5F4A] hover:underline flex items-center gap-1 pl-2">
                       Review <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -91,32 +91,32 @@ export const MatchInboxView: React.FC<MatchInboxViewProps> = ({
                 {/* Side-by-side snippet preview */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Lost Snippet */}
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/60 border border-rose-500/20">
-                    <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-slate-950">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-rose-50/50 border border-rose-100">
+                    <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-slate-100 border border-slate-200">
                       <img src={lostReport.photoBase64} alt="" className="w-full h-full object-cover" />
                     </div>
                     <div className="min-w-0 text-xs">
-                      <span className="text-[10px] font-bold text-rose-400 uppercase tracking-wider">Lost Report</span>
-                      <p className="font-semibold text-slate-200 truncate">{lostReport.description}</p>
-                      <p className="text-slate-400 truncate">{lostReport.location}</p>
+                      <span className="text-[10px] font-extrabold text-[#C4291F] uppercase tracking-wider">Lost Report</span>
+                      <p className="font-bold text-slate-900 truncate">{lostReport.description}</p>
+                      <p className="text-slate-500 truncate">{lostReport.location}</p>
                     </div>
                   </div>
 
                   {/* Found Snippet */}
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/60 border border-emerald-500/20">
-                    <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-slate-950">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-[#DCEEE5]/30 border border-[#2C8C63]/20">
+                    <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-slate-100 border border-slate-200">
                       <img src={foundReport.photoBase64} alt="" className="w-full h-full object-cover" />
                     </div>
                     <div className="min-w-0 text-xs">
-                      <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Found Report</span>
-                      <p className="font-semibold text-slate-200 truncate">{foundReport.description}</p>
-                      <p className="text-slate-400 truncate">{foundReport.location}</p>
+                      <span className="text-[10px] font-extrabold text-[#1E5F4A] uppercase tracking-wider">Found Report</span>
+                      <p className="font-bold text-slate-900 truncate">{foundReport.description}</p>
+                      <p className="text-slate-500 truncate">{foundReport.location}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Explanation sentence */}
-                <p className="text-xs text-slate-300 italic line-clamp-2 bg-slate-950/40 p-2.5 rounded-lg border border-slate-800">
+                <p className="text-xs text-slate-700 italic line-clamp-2 bg-[#F3F1EA] p-3 rounded-xl">
                   "{match.explanation}"
                 </p>
               </div>
@@ -124,10 +124,10 @@ export const MatchInboxView: React.FC<MatchInboxViewProps> = ({
           })}
         </div>
       ) : (
-        <div className="glass-card rounded-3xl p-12 text-center border border-slate-800 space-y-3">
-          <ShieldCheck className="w-10 h-10 text-slate-600 mx-auto" />
-          <h3 className="text-lg font-heading font-semibold text-slate-200">No Potential Matches Yet</h3>
-          <p className="text-sm text-slate-400 max-w-sm mx-auto">
+        <div className="sb-card p-12 text-center bg-white space-y-3">
+          <ShieldCheck className="w-10 h-10 text-slate-400 mx-auto" />
+          <h3 className="text-lg font-heading font-extrabold text-slate-900">No Potential Matches Yet</h3>
+          <p className="text-sm text-slate-500 max-w-sm mx-auto">
             When new lost or found reports are submitted, the Gemini AI engine will automatically scan and post candidates here.
           </p>
         </div>

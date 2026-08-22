@@ -65,7 +65,7 @@ export default function App() {
   const pendingMatchCount = matches.filter((m) => m.status === 'pending').length;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-300">
+    <div className="min-h-screen bg-[#F3F1EA] text-[rgba(0,0,0,0.87)] flex flex-col font-sans selection:bg-[#2C8C63]/20 selection:text-[#1E5F4A]">
       {/* Navigation Header */}
       <Navbar
         activeTab={activeTab}
@@ -78,8 +78,8 @@ export default function App() {
       <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-24 space-y-4">
-            <div className="w-10 h-10 border-4 border-amber-500/30 border-t-amber-400 rounded-full animate-spin" />
-            <p className="text-sm font-semibold text-slate-400">Initializing Local Campus Database...</p>
+            <div className="w-10 h-10 border-4 border-[#2C8C63]/30 border-t-[#1E5F4A] rounded-full animate-spin" />
+            <p className="text-sm font-semibold text-slate-600">Initializing Local Campus Database...</p>
           </div>
         ) : (
           <>
@@ -113,18 +113,18 @@ export default function App() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="glass-card border-t border-slate-800 bg-slate-950 py-6 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      {/* Starbucks Deep Green Footer */}
+      <footer className="border-t border-slate-300/80 bg-[#16332B] text-white py-8 mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#DCEEE5]/80">
           <div className="flex items-center gap-2">
-            <span className="font-heading font-bold text-slate-200">CampusFind AI</span>
-            <span>— Hackathon Submission for PromptWars x YenTech</span>
+            <span className="font-heading font-extrabold text-white">CampusFind AI</span>
+            <span>— Smart Campus Lost & Found Platform</span>
           </div>
-          <div className="flex items-center gap-4 text-slate-500">
+          <div className="flex items-center gap-4">
             <button
               onClick={handleSeedDemoData}
               disabled={isSeeding}
-              className="text-amber-400 hover:underline font-mono"
+              className="text-[#E0A61B] hover:underline font-bold"
             >
               Reset Demo Dataset
             </button>

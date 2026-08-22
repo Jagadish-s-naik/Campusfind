@@ -18,58 +18,57 @@ export const ReportCard: React.FC<ReportCardProps> = ({ report, onSelect }) => {
   return (
     <div
       onClick={() => onSelect(report)}
-      className="glass-card glass-card-hover rounded-3xl p-4 flex flex-col justify-between group relative overflow-hidden cursor-pointer"
+      className="sb-card sb-card-hover p-4 flex flex-col justify-between group cursor-pointer relative overflow-hidden bg-white"
     >
-      {/* Subtle Gradient Glow Top Border */}
+      {/* Top Accent Strip */}
       <div
-        className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${
-          isLost ? 'from-rose-500 via-amber-500 to-rose-600' : 'from-emerald-500 via-teal-400 to-emerald-600'
+        className={`absolute top-0 left-0 right-0 h-1.5 ${
+          isLost ? 'bg-[#C4291F]' : 'bg-[#2C8C63]'
         }`}
       />
 
       {/* Header Badge & Date */}
-      <div className="flex items-center justify-between mb-3.5 pt-1">
+      <div className="flex items-center justify-between mb-3 pt-1">
         <span
           className={`px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider flex items-center gap-1.5 ${
             isLost
-              ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
-              : 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+              ? 'bg-rose-50 text-[#C4291F] border border-rose-200'
+              : 'bg-[#DCEEE5] text-[#1E5F4A] border border-[#2C8C63]/20'
           }`}
         >
-          <span className={`w-1.5 h-1.5 rounded-full ${isLost ? 'bg-rose-400 animate-pulse' : 'bg-emerald-400'}`} />
+          <span className={`w-1.5 h-1.5 rounded-full ${isLost ? 'bg-[#C4291F]' : 'bg-[#2C8C63]'}`} />
           {report.type}
         </span>
-        <span className="text-xs text-slate-400 flex items-center gap-1 font-mono">
-          <Calendar className="w-3.5 h-3.5 text-slate-500" />
+        <span className="text-xs text-[rgba(0,0,0,0.58)] flex items-center gap-1 font-sans">
+          <Calendar className="w-3.5 h-3.5 text-slate-400" />
           {formattedDate}
         </span>
       </div>
 
-      {/* Image Thumbnail with Overlay */}
-      <div className="relative w-full h-48 rounded-2xl overflow-hidden mb-3.5 bg-slate-950 border border-slate-800/80 group-hover:border-slate-700 transition-colors">
+      {/* Image Thumbnail with smooth fade-in */}
+      <div className="relative w-full h-48 rounded-xl overflow-hidden mb-3.5 bg-slate-100 border border-slate-200">
         <img
           src={report.photoBase64}
           alt={report.structuredAttributes?.summary || report.description}
-          className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ease-out opacity-95 group-hover:opacity-100"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
-
+        
         {/* Floating Category Pill */}
-        <span className="absolute bottom-3 left-3 bg-slate-950/90 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-semibold text-amber-300 border border-amber-500/30 flex items-center gap-1.5 shadow-lg">
-          <Tag className="w-3 h-3 text-amber-400" />
+        <span className="absolute bottom-3 left-3 bg-[#16332B] text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-md">
+          <Tag className="w-3 h-3 text-[#E0A61B]" />
           {report.structuredAttributes?.category || 'Uncategorized'}
         </span>
 
         {/* AI Verified Badge */}
-        <span className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2 py-0.5 rounded-lg text-[10px] font-mono text-slate-300 border border-slate-700/60 flex items-center gap-1">
-          <Sparkles className="w-3 h-3 text-amber-400" /> AI Logged
+        <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-md text-[10px] font-bold text-[#1E5F4A] border border-[#1E5F4A]/20 flex items-center gap-1">
+          <Sparkles className="w-3 h-3 text-[#1E5F4A]" /> AI Logged
         </span>
       </div>
 
       {/* Description Snippet */}
-      <div className="space-y-2.5 flex-grow">
-        <h3 className="text-sm font-semibold text-slate-100 line-clamp-2 group-hover:text-amber-400 transition-colors leading-snug">
+      <div className="space-y-2 flex-grow">
+        <h3 className="text-sm font-bold text-[rgba(0,0,0,0.87)] line-clamp-2 group-hover:text-[#1E5F4A] transition-colors leading-snug">
           {report.description}
         </h3>
 
@@ -77,12 +76,12 @@ export const ReportCard: React.FC<ReportCardProps> = ({ report, onSelect }) => {
         {report.structuredAttributes && (
           <div className="flex flex-wrap gap-1.5 pt-0.5">
             {report.structuredAttributes.brand !== 'Unknown' && (
-              <span className="text-[11px] px-2.5 py-0.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 font-medium">
+              <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#F8F8F8] text-slate-800 font-semibold border border-slate-200">
                 {report.structuredAttributes.brand}
               </span>
             )}
             {report.structuredAttributes.color.slice(0, 2).map((c, i) => (
-              <span key={i} className="text-[11px] px-2.5 py-0.5 rounded-lg bg-slate-900/80 border border-slate-800 text-slate-400 capitalize">
+              <span key={i} className="text-[11px] px-2.5 py-0.5 rounded-full bg-[#F8F8F8] text-slate-600 capitalize">
                 {c}
               </span>
             ))}
@@ -91,12 +90,12 @@ export const ReportCard: React.FC<ReportCardProps> = ({ report, onSelect }) => {
       </div>
 
       {/* Footer Location & Reporter */}
-      <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[rgba(0,0,0,0.58)]">
         <div className="flex items-center gap-1.5 truncate max-w-[80%]">
-          <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-          <span className="truncate text-slate-300 font-medium">{report.location}</span>
+          <MapPin className="w-3.5 h-3.5 text-[#2C8C63] shrink-0" />
+          <span className="truncate font-semibold text-[rgba(0,0,0,0.87)]">{report.location}</span>
         </div>
-        <span className="text-[11px] text-slate-500 font-mono truncate max-w-[20%] text-right">
+        <span className="text-[11px] text-slate-400 truncate max-w-[20%] text-right font-medium">
           {report.reporterName.split(' ')[0]}
         </span>
       </div>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Sparkles, Search, PlusCircle, LayoutDashboard, ShieldCheck, MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { Sparkles, Search, Plus, LayoutDashboard, ShieldCheck, MapPin, Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: 'dashboard' | 'browse' | 'matches' | 'hotspots';
@@ -14,135 +14,181 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenReportModal,
   pendingMatchCount,
 }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <header className="sticky top-0 z-40 w-full glass-card border-b border-slate-800/80 bg-[#0b0f19]/85 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo & Platform Title */}
-          <div className="flex items-center space-x-3.5 cursor-pointer group" onClick={() => setActiveTab('dashboard')}>
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-600 flex items-center justify-center shadow-glow group-hover:scale-105 transition-transform duration-300">
-              <Sparkles className="w-6 h-6 text-slate-950 stroke-[2.5]" />
+    <>
+      <header className="sticky top-0 z-40 w-full bg-[#FFFFFF] border-b border-slate-200/80 shadow-sm transition-all">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            {/* Logo & Platform Title */}
+            <div
+              className="flex items-center space-x-3 cursor-pointer group"
+              onClick={() => {
+                setActiveTab('dashboard');
+                setMobileMenuOpen(false);
+              }}
+            >
+              <div className="w-10 h-10 rounded-full bg-[#1E5F4A] flex items-center justify-center text-white shadow-sm group-hover:bg-[#2C8C63] transition-colors">
+                <Sparkles className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <span className="font-heading font-extrabold text-xl text-[rgba(0,0,0,0.87)] tracking-tight flex items-center gap-2">
+                  CampusFind <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#DCEEE5] text-[#1E5F4A] font-bold uppercase">Gemini AI</span>
+                </span>
+                <p className="text-xs text-[rgba(0,0,0,0.58)] font-sans hidden sm:block">Smart Campus Lost & Found</p>
+              </div>
             </div>
-            <div>
-              <span className="font-heading font-extrabold text-xl text-white tracking-tight flex items-center gap-2">
-                CampusFind <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 font-bold border border-amber-500/30 uppercase tracking-widest">Gemini AI</span>
-              </span>
-              <p className="text-xs text-slate-400 font-sans hidden sm:block">Smart Campus Lost & Found Platform</p>
+
+            {/* Desktop Navigation Links */}
+            <nav className="hidden md:flex items-center space-x-1.5">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${
+                  activeTab === 'dashboard'
+                    ? 'bg-[#1E5F4A] text-white shadow-sm'
+                    : 'text-[rgba(0,0,0,0.7)] hover:text-[#1E5F4A] hover:bg-[#F3F1EA]'
+                }`}
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                Home
+              </button>
+
+              <button
+                onClick={() => setActiveTab('browse')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${
+                  activeTab === 'browse'
+                    ? 'bg-[#1E5F4A] text-white shadow-sm'
+                    : 'text-[rgba(0,0,0,0.7)] hover:text-[#1E5F4A] hover:bg-[#F3F1EA]'
+                }`}
+              >
+                <Search className="w-4 h-4" />
+                Browse
+              </button>
+
+              <button
+                onClick={() => setActiveTab('matches')}
+                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${
+                  activeTab === 'matches'
+                    ? 'bg-[#1E5F4A] text-white shadow-sm'
+                    : 'text-[rgba(0,0,0,0.7)] hover:text-[#1E5F4A] hover:bg-[#F3F1EA]'
+                }`}
+              >
+                <ShieldCheck className="w-4 h-4" />
+                Match Inbox
+                {pendingMatchCount > 0 && (
+                  <span className="ml-1 px-1.5 py-0.5 text-[10px] font-black rounded-full bg-[#E0A61B] text-slate-950">
+                    {pendingMatchCount}
+                  </span>
+                )}
+              </button>
+
+              <button
+                onClick={() => setActiveTab('hotspots')}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${
+                  activeTab === 'hotspots'
+                    ? 'bg-[#1E5F4A] text-white shadow-sm'
+                    : 'text-[rgba(0,0,0,0.7)] hover:text-[#1E5F4A] hover:bg-[#F3F1EA]'
+                }`}
+              >
+                <MapPin className="w-4 h-4" />
+                Hotspots
+              </button>
+            </nav>
+
+            {/* Action Area & Hamburger */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={onOpenReportModal}
+                className="sb-btn-primary px-5 py-2.5 text-xs flex items-center gap-2 shadow-sm"
+              >
+                <Plus className="w-4.5 h-4.5 stroke-[2.5]" />
+                <span className="hidden sm:inline">Submit Report</span>
+                <span className="sm:hidden">Report</span>
+              </button>
+
+              {/* Hamburger Button for Mobile */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-full text-slate-700 hover:bg-[#F3F1EA] transition-colors"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
           </div>
+        </div>
 
-          {/* Center Navigation Segment */}
-          <nav className="hidden md:flex items-center space-x-1.5 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800/90 shadow-inner">
+        {/* Mobile Hamburger Drawer Panel */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-slate-200 bg-[#FFFFFF] px-4 pt-3 pb-4 space-y-2 animate-in slide-in-from-top duration-200">
             <button
-              onClick={() => setActiveTab('dashboard')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
-                activeTab === 'dashboard'
-                  ? 'bg-amber-500 text-slate-950 shadow-glow font-extrabold'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+              onClick={() => {
+                setActiveTab('dashboard');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-full text-sm font-bold ${
+                activeTab === 'dashboard' ? 'bg-[#1E5F4A] text-white' : 'text-slate-700 hover:bg-[#F3F1EA]'
               }`}
             >
-              <LayoutDashboard className="w-4 h-4" />
-              Dashboard
+              <LayoutDashboard className="w-5 h-5" />
+              Home
             </button>
-
             <button
-              onClick={() => setActiveTab('browse')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
-                activeTab === 'browse'
-                  ? 'bg-amber-500 text-slate-950 shadow-glow font-extrabold'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+              onClick={() => {
+                setActiveTab('browse');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-full text-sm font-bold ${
+                activeTab === 'browse' ? 'bg-[#1E5F4A] text-white' : 'text-slate-700 hover:bg-[#F3F1EA]'
               }`}
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-5 h-5" />
               Browse Database
             </button>
-
             <button
-              onClick={() => setActiveTab('matches')}
-              className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
-                activeTab === 'matches'
-                  ? 'bg-amber-500 text-slate-950 shadow-glow font-extrabold'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+              onClick={() => {
+                setActiveTab('matches');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-full text-sm font-bold ${
+                activeTab === 'matches' ? 'bg-[#1E5F4A] text-white' : 'text-slate-700 hover:bg-[#F3F1EA]'
               }`}
             >
-              <ShieldCheck className="w-4 h-4" />
-              Match Inbox
+              <div className="flex items-center gap-3">
+                <ShieldCheck className="w-5 h-5" />
+                Match Inbox
+              </div>
               {pendingMatchCount > 0 && (
-                <span className="ml-1 px-1.5 py-0.5 text-[10px] font-black rounded-full bg-amber-300 text-slate-950 animate-pulse">
+                <span className="px-2 py-0.5 text-xs font-black rounded-full bg-[#E0A61B] text-slate-950">
                   {pendingMatchCount}
                 </span>
               )}
             </button>
-
             <button
-              onClick={() => setActiveTab('hotspots')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
-                activeTab === 'hotspots'
-                  ? 'bg-amber-500 text-slate-950 shadow-glow font-extrabold'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+              onClick={() => {
+                setActiveTab('hotspots');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-full text-sm font-bold ${
+                activeTab === 'hotspots' ? 'bg-[#1E5F4A] text-white' : 'text-slate-700 hover:bg-[#F3F1EA]'
               }`}
             >
-              <MapPin className="w-4 h-4" />
+              <MapPin className="w-5 h-5" />
               Hotspots
             </button>
-          </nav>
-
-          {/* Action Button */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={onOpenReportModal}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs shadow-glow transition-all active:scale-95"
-            >
-              <PlusCircle className="w-4.5 h-4.5 stroke-[2.5]" />
-              <span className="hidden sm:inline">File a Report</span>
-              <span className="sm:hidden">Report</span>
-            </button>
           </div>
-        </div>
+        )}
+      </header>
 
-        {/* Mobile Navigation Bar */}
-        <div className="flex md:hidden items-center justify-around py-2.5 border-t border-slate-800/80 text-[11px]">
-          <button
-            onClick={() => setActiveTab('dashboard')}
-            className={`flex flex-col items-center gap-1 ${
-              activeTab === 'dashboard' ? 'text-amber-400 font-bold' : 'text-slate-400'
-            }`}
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            Home
-          </button>
-          <button
-            onClick={() => setActiveTab('browse')}
-            className={`flex flex-col items-center gap-1 ${
-              activeTab === 'browse' ? 'text-amber-400 font-bold' : 'text-slate-400'
-            }`}
-          >
-            <Search className="w-4 h-4" />
-            Browse
-          </button>
-          <button
-            onClick={() => setActiveTab('matches')}
-            className={`relative flex flex-col items-center gap-1 ${
-              activeTab === 'matches' ? 'text-amber-400 font-bold' : 'text-slate-400'
-            }`}
-          >
-            <ShieldCheck className="w-4 h-4" />
-            Matches
-            {pendingMatchCount > 0 && (
-              <span className="absolute -top-1 right-2 w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-            )}
-          </button>
-          <button
-            onClick={() => setActiveTab('hotspots')}
-            className={`flex flex-col items-center gap-1 ${
-              activeTab === 'hotspots' ? 'text-amber-400 font-bold' : 'text-slate-400'
-            }`}
-          >
-            <MapPin className="w-4 h-4" />
-            Hotspots
-          </button>
-        </div>
-      </div>
-    </header>
+      {/* Persistent Floating Quick-Report CTA Button (Starbucks 56px Frap style persistent across all screens) */}
+      <button
+        onClick={onOpenReportModal}
+        className="sb-fab group"
+        title="Quick File Lost or Found Report"
+        aria-label="Quick File Report"
+      >
+        <Plus className="w-7 h-7 stroke-[2.5] group-hover:rotate-90 transition-transform duration-300" />
+      </button>
+    </>
   );
 };

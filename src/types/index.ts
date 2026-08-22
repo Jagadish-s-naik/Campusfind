@@ -1,18 +1,19 @@
 export type ReportType = 'lost' | 'found';
 
 export type CampusLocation =
-  | 'Library Main Entrance'
-  | 'Central Cafeteria'
-  | 'Student Gym & Fitness Center'
-  | 'Hostel Block A'
-  | 'Hostel Block B'
-  | 'Main Gate Security Office'
-  | 'Lecture Hall 1 (Science)'
-  | 'Lecture Hall 2 (Engineering)'
-  | 'Lecture Hall 3 (Arts)'
-  | 'Central Parking Lot'
-  | 'Sports Complex'
-  | 'Admin Block & Student Affairs';
+  | 'Cafe(ground Floor)'
+  | 'cafe(6th Floor)'
+  | 'NIAT LAB'
+  | 'Mayura Block(ground Floor)'
+  | 'Seminar Hall'
+  | 'Prayer Hall'
+  | 'Maintainance Room'
+  | 'Computer Lab'
+  | 'IT Support room'
+  | 'LH 17(C Block)'
+  | 'Lift A Block'
+  | 'Lift C Block'
+  | 'Wash Room';
 
 export interface StructuredAttributes {
   category: string;
@@ -50,18 +51,19 @@ export interface MatchResult {
 }
 
 export const CAMPUS_LOCATIONS: CampusLocation[] = [
-  'Library Main Entrance',
-  'Central Cafeteria',
-  'Student Gym & Fitness Center',
-  'Hostel Block A',
-  'Hostel Block B',
-  'Main Gate Security Office',
-  'Lecture Hall 1 (Science)',
-  'Lecture Hall 2 (Engineering)',
-  'Lecture Hall 3 (Arts)',
-  'Central Parking Lot',
-  'Sports Complex',
-  'Admin Block & Student Affairs',
+  'Cafe(ground Floor)',
+  'cafe(6th Floor)',
+  'NIAT LAB',
+  'Mayura Block(ground Floor)',
+  'Seminar Hall',
+  'Prayer Hall',
+  'Maintainance Room',
+  'Computer Lab',
+  'IT Support room',
+  'LH 17(C Block)',
+  'Lift A Block',
+  'Lift C Block',
+  'Wash Room',
 ];
 
 export const ITEM_CATEGORIES = [
