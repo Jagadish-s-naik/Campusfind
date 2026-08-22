@@ -115,7 +115,14 @@ export async function evaluateMatchWithGemini(
     dateTime: string;
     attributes: StructuredAttributes;
   }
-): Promise<{ confidenceScore: number; explanation: string; matchedAttributes: string[] }> {
+): Promise<{
+  confidenceScore: number;
+  explanation: string;
+  matchedAttributes: string[];
+  spatialProximity?: 'Same Location' | 'Adjacent Area' | 'Campus Wide';
+  temporalProximityHours?: number;
+  priorityLevel?: 'HIGH_PRIORITY' | 'MEDIUM_PRIORITY' | 'ROUTINE';
+}> {
   if (!ai || !GEMINI_API_KEY) {
     return generateFallbackMatchEvaluation(lostReport, foundReport);
   }
@@ -141,7 +148,10 @@ Return a strict JSON object with EXACTLY:
 {
   "confidence_score": <number between 0 and 100 representing probability of match>,
   "matched_attributes": [<array of specific matching traits, e.g. "Black color", "Jansport brand", "Red keychain", "Reported near Library">],
-  "explanation": "<a clear, human-readable 2-sentence explanation of why these match, citing specific attributes and time/location signals. Example: 'Both mention a black Jansport backpack with a red keychain, reported within 200m and 3 hours of each other.'>"
+  "spatial_proximity": "One of [Same Location, Adjacent Area, Campus Wide]",
+  "temporal_proximity_hours": <estimated difference in hours between loss and recovery>,
+  "priority_level": "One of [HIGH_PRIORITY, MEDIUM_PRIORITY, ROUTINE] based on value and match certainty",
+  "explanation": "<a clear, human-readable 2-sentence explanation of why these match, citing specific attributes and time/location signals.>"
 }`;
 
     const response = await ai.models.generateContent({
@@ -157,6 +167,9 @@ Return a strict JSON object with EXACTLY:
       confidenceScore: Math.min(100, Math.max(0, Number(parsed.confidence_score) || 50)),
       explanation: parsed.explanation || 'Matches identified based on item category and reported location.',
       matchedAttributes: Array.isArray(parsed.matched_attributes) ? parsed.matched_attributes : ['Category match'],
+      spatialProximity: parsed.spatial_proximity || (lostReport.location === foundReport.location ? 'Same Location' : 'Adjacent Area'),
+      temporalProximityHours: Number(parsed.temporal_proximity_hours) || 2,
+      priorityLevel: parsed.priority_level || (Number(parsed.confidence_score) >= 75 ? 'HIGH_PRIORITY' : 'MEDIUM_PRIORITY'),
     };
   } catch (error) {
     console.error('Error during Gemini pairwise match evaluation:', error);

@@ -47,6 +47,9 @@ export interface MatchResult {
   confidenceScore: number; // 0 - 100
   explanation: string;
   matchedAttributes: string[];
+  spatialProximity?: 'Same Location' | 'Adjacent Area' | 'Campus Wide';
+  temporalProximityHours?: number;
+  priorityLevel?: 'HIGH_PRIORITY' | 'MEDIUM_PRIORITY' | 'ROUTINE';
   createdAt: string;
   status: 'pending' | 'confirmed' | 'dismissed';
 }

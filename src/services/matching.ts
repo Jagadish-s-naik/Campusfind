@@ -88,6 +88,9 @@ export async function triggerMatchingEngine(newReport: ItemReport): Promise<Matc
         confidenceScore: matchData.confidenceScore,
         explanation: matchData.explanation,
         matchedAttributes: matchData.matchedAttributes,
+        spatialProximity: matchData.spatialProximity || (lostReport.location === foundReport.location ? 'Same Location' : 'Adjacent Area'),
+        temporalProximityHours: matchData.temporalProximityHours || 2,
+        priorityLevel: matchData.priorityLevel || (matchData.confidenceScore >= 75 ? 'HIGH_PRIORITY' : 'MEDIUM_PRIORITY'),
         createdAt: new Date().toISOString(),
         status: 'pending',
       };

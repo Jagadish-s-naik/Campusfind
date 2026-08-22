@@ -69,9 +69,15 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
         {/* Modal Header & Confidence Badge */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-100">
           <div>
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex flex-wrap items-center gap-2 mb-1">
               <span className="px-3 py-1 rounded-full text-xs font-extrabold bg-[#DCEEE5] text-[#1E5F4A] flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-[#1E5F4A]" /> Pairwise Match Comparison
+                <Sparkles className="w-3 h-3 text-[#1E5F4A]" /> Gemini Assistant Reasoning
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F3F1EA] text-[#16332B] border border-[#16332B]/20">
+                📍 {match.spatialProximity || (lostReport.location === foundReport.location ? 'Same Location' : 'Adjacent Area')}
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#F3F1EA] text-[#16332B] border border-[#16332B]/20">
+                ⚡ Priority: {match.priorityLevel || (score >= 75 ? 'HIGH_PRIORITY' : 'MEDIUM_PRIORITY')}
               </span>
             </div>
             <h2 className="text-2xl font-heading font-extrabold text-slate-900">Match Verdict & Verification</h2>
