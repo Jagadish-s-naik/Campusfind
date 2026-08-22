@@ -4,15 +4,15 @@
 
 ---
 
-## 🎨 Visual Design System 
+## 🎨 Visual Design System
 
-This application has been crafted adhering strictly to the **Starbucks Design System Specification** (`docs/DESIGN-starbucks.md`):
+This application features a warm, human-centered retail-grade design system:
 
-- **Four-Tier Brand Greens**: Starbucks Green (`#006241`), Green Accent (`#00754A`), House Green (`#1E3932`), and Mint Wash (`#D4E9E2`).
-- **Warm Neutral Canvas**: Off-white Cream (`#F2F0EB`) and Ceramic (`#EDEBE9`) background surfaces referencing physical café materials rather than harsh stark whites.
-- **Starbucks Ceremonial Gold**: Gold (`#CBA258`) reserved strictly for high-status AI match confidence callouts and awards.
+- **Four-Tier Brand Greens**: Deep Brand Green (`#1E5F4A`), Luminous Accent Green (`#2C8C63`), House Deep Green (`#16332B`), and Mint Wash (`#DCEEE5`).
+- **Warm Neutral Canvas**: Off-white Cream (`#F3F1EA`) and Ceramic (`#EDEBE9`) background surfaces referencing warm physical material textures rather than harsh stark whites.
+- **Ceremonial Status Gold**: Gold (`#E0A61B`) reserved strictly for high-status AI match confidence callouts and awards.
 - **50px Universal Full-Pill Buttons**: All CTAs feature 50px pill curvature with active `scale(0.95)` press feedback.
-- **Contextual Editorial Serif**: Integrates `Lora` editorial serif for hero headline accents paired with `Plus Jakarta Sans`.
+- **Contextual Editorial Serif**: Integrates `Lora` editorial serif for hero headline accents paired with `Inter` and `Manrope`.
 
 ---
 
@@ -30,11 +30,11 @@ This application has been crafted adhering strictly to the **Starbucks Design Sy
 
 All 5 non-negotiable core requirements are 100% functional and demonstrably live:
 
-1. **Lost & Found Report Submission**: 3-step wizard taking photo upload (base64 stored in IndexedDB), free-text description, campus location dropdown (12 landmarks), date/time selector, and student contact info.
+1. **Lost & Found Report Submission**: 3-step progressive disclosure wizard taking photo upload (base64 stored in IndexedDB), free-text description, campus location dropdown (13 campus areas), date/time selector, and student contact info.
 2. **AI Analysis & Attribute Extraction**: Every report triggers Gemini Multimodal API to extract `{ category, color[], brand, distinguishing_features[], summary }`.
 3. **Automated AI Matching Engine**: Opposite-type reports (Lost vs Found) undergo vector cosine similarity pre-filtering followed by pairwise Gemini comparison.
 4. **Confidence Score**: Each potential match is assigned a clear numeric percentage score (0-100%).
-5. **Grounded Human-Readable Explanation**: Explanations cite exact matching item attributes, brand names, visual marks, location proximity, and timing (e.g. *"Both reports detail a black JanSport backpack featuring a red keychain, reported at the Library Main Entrance within 2 hours of each other"*).
+5. **Grounded Human-Readable Explanation**: Explanations cite exact matching item attributes, brand names, visual marks, location proximity, and timing.
 6. **Search & Browse Directory**: Filterable directory allowing instant keyword search, category filtering, campus location filtering, and report type toggling.
 
 ---
@@ -44,7 +44,7 @@ All 5 non-negotiable core requirements are 100% functional and demonstrably live
 ```
 ┌─────────────────────────────────────────────────────────┐
 │              React 18 + TypeScript (Vite)               │
-│ - Starbucks Flagship Design System (Green/Cream/Gold)   │
+│ - Retail Flagship Design System (Green/Cream/Gold)      │
 │ - 50px Pill Buttons + 12px Whisper-Shadow Cards         │
 └───────────┬─────────────────────────────────┬───────────┘
             │                                 │
