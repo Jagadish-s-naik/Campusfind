@@ -18,6 +18,8 @@ This application has been crafted adhering strictly to the **Starbucks Design Sy
 
 ## 📌 Submission Overview & Metadata
 
+- **Live Deployed Application**: [https://campusfind-six.vercel.app/](https://campusfind-six.vercel.app/)
+- **GitHub Repository**: [https://github.com/Jagadish-s-naik/Campusfind](https://github.com/Jagadish-s-naik/Campusfind)
 - **Chosen Vertical**: Smart Campus Infrastructure / Student Utility
 - **Problem Statement**: Reconnecting lost items with owners on campus is inefficient due to fragmented descriptions, missing location details, and manual search overhead.
 - **Core AI Solution**: Uses Google Gemini Multimodal (`gemini-2.5-flash`) for visual attribute extraction and pairwise match evaluation, paired with Gemini Embeddings (`text-embedding-004`) for fast in-browser vector pre-filtering.
