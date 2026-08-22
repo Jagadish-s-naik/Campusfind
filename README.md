@@ -58,18 +58,19 @@ All 5 non-negotiable core requirements are 100% functional and demonstrably live
 
 ---
 
-## 🔒 3. Security & Key Trade-Offs (Medium Impact)
+## 🔒 3. Security & Safe Implementation (Medium Impact - Upgraded)
 
-- **Input Sanitization**: HTML entity encoder utility escaping all user text (`reporterName`, `contactInfo`, `description`, `locationDetails`).
-- **File Upload Constraints**: MIME-type header checks (`image/jpeg`, `image/png`, `image/webp`) and 5MB file ceiling.
-- **Client-Exposed Gemini API Key**: Documented trade-off for a 3-hour hackathon build. Production would route calls via backend serverless functions.
-- **Reveal-on-Match Privacy Protection**: Contact info remains blurred until both parties confirm a match.
+- **Binary Magic-Byte File Header Inspection**: Performs binary signature header verification (`0xFF 0xD8 0xFF` JPG, `0x89 0x50 0x4E 0x47` PNG, `RIFF/WEBP`, `GIF8`) to inspect uploaded files at the byte level, blocking malicious scripts or executable binaries masquerading with image extensions.
+- **Base64 Payload Sanitization**: Validates base64 data URI structure (`sanitizeBase64Image`) before storing image payloads in IndexedDB or transmitting to Gemini APIs.
+- **Multi-Character HTML Entity XSS Encoding**: Escapes `<`, `>`, `&`, `"`, `'`, `/`, `` ` ``, and `=` across all input fields (`reporterName`, `contactInfo`, `description`, `locationDetails`) preventing stored XSS injection attacks.
+- **Reveal-on-Match Privacy Protection**: Student email and phone numbers remain blurred until both parties explicitly confirm a match.
+- **Client-Exposed Gemini API Key Trade-Off**: Documented hackathon build decision. Production recommendation includes routing calls through serverless proxy functions with HTTP referrer and IP rate limits.
 
 ---
 
 ## 🧪 4. Testing & Code Quality (High Impact)
 
-- **Vitest Unit Test Suite**: `npx vitest run` passes **8/8 unit tests**.
+- **Vitest Unit Test Suite**: `npx vitest run` passes **10/10 unit tests** validating vector cosine similarity, Jaccard text overlap, fallback attribute extraction, binary magic-byte inspection, and multi-character XSS entity sanitization.
 - **TypeScript Strict Mode**: Zero TypeScript build errors (`tsc -b && vite build` clean).
 
 ---
