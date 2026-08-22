@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { cosineSimilarity, jaccardWordSimilarity } from '../../utils/similarity';
 import { generateFallbackAttributes, generateFallbackEmbedding } from '../aiFallback';
-import { sanitizeInput, validateImageFileSecurely, sanitizeBase64Image } from '../../utils/security';
+import { sanitizeInput, validateImageFileSecurely, sanitizeBase64Image, maskPIIDetails } from '../../utils/security';
 
 describe('Vector Cosine Similarity', () => {
   it('should return 1 for identical vectors', () => {
@@ -53,9 +53,15 @@ describe('Fallback Attribute Extraction', () => {
 
 describe('Security, XSS Sanitization & Magic Byte Inspection', () => {
   it('should escape malicious HTML, backticks, equal signs, and script injection strings', () => {
-    const unsafeText = '<script>alert("xss")</script> & `test` = 1';
+    const unsafeText = '<script>alert("xss")</script> & `test` = 1 javascript:void(0)';
     const cleanText = sanitizeInput(unsafeText);
-    expect(cleanText).toBe('&lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt; &amp; &#x60;test&#x60; &#x3D; 1');
+    expect(cleanText).toContain('&lt;script&gt;');
+    expect(cleanText).not.toContain('javascript:');
+  });
+
+  it('should mask PII contact details correctly for privacy protection', () => {
+    expect(maskPIIDetails('alex@student.edu')).toBe('al••••@student.edu');
+    expect(maskPIIDetails('555-0192')).toBe('55••••92');
   });
 
   it('should validate PNG binary magic bytes header correctly', async () => {

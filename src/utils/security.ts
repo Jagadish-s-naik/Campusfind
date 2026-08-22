@@ -4,7 +4,7 @@
 
 /**
  * 1. Advanced HTML Entity Encoder & XSS Sanitizer
- * Escapes control characters, HTML tags, script vectors, and dangerous attributes.
+ * Escapes control characters, HTML tags, script vectors, inline event handlers, and dangerous attributes.
  */
 export function sanitizeInput(input: string): string {
   if (!input || typeof input !== 'string') return '';
@@ -18,6 +18,10 @@ export function sanitizeInput(input: string): string {
     .replace(/\//g, '&#x2F;')
     .replace(/`/g, '&#x60;')
     .replace(/=/g, '&#x3D;')
+    .replace(/javascript:/gi, '')
+    .replace(/data:/gi, 'data_blocked:')
+    .replace(/vbscript:/gi, '')
+    .replace(/on\w+=/gi, '')
     .trim();
 }
 
@@ -57,6 +61,7 @@ export async function validateImageFileSecurely(file: File): Promise<{ valid: bo
     }
   } catch (err) {
     console.error('File magic byte verification failed:', err);
+    return { valid: false, error: 'Security restriction: Unable to verify file binary header.' };
   }
 
   return { valid: true };
@@ -71,22 +76,39 @@ export function sanitizeBase64Image(base64String: string): string {
   // Ensure string starts with valid image data URI scheme
   const validDataUriRegex = /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/=]+$/;
   if (!validDataUriRegex.test(base64String)) {
-    // If prefix is missing, clean non-base64 characters safely
+    // If prefix is missing or dirty, clean non-base64 characters safely
     return base64String.replace(/[^A-Za-z0-9+/=]/g, '');
   }
   return base64String;
 }
 
 /**
- * 4. API Key Proxy Guard & Production Security Architecture Notice
+ * 4. PII Data Anonymization Helper for Privacy Protection
+ */
+export function maskPIIDetails(detail: string): string {
+  if (!detail) return '••••••••';
+  if (detail.includes('@')) {
+    const parts = detail.split('@');
+    return `${parts[0].slice(0, 2)}••••@${parts[1]}`;
+  }
+  if (detail.length > 4) {
+    return `${detail.slice(0, 2)}••••${detail.slice(-2)}`;
+  }
+  return '••••••••';
+}
+
+/**
+ * 5. Security Architecture & Threat Mitigation Matrix
  */
 export function getSecurityArchitectureNotice() {
   return {
     clientExposedKeyTradeoff: true,
     mitigationsApplied: [
-      'Client-side HTML entity encoding preventing stored XSS injection.',
+      'Client-side HTML entity & URI encoding preventing stored/reflected XSS injection.',
       'Binary magic byte signature inspection for uploaded image assets.',
       'Reveal-on-match contact blurring protecting student PII (phone/email).',
+      'HTTP Content-Security-Policy (CSP) & Strict Transport Security (HSTS) headers via Vercel edge configuration.',
+      'Frameguard X-Frame-Options: DENY preventing clickjacking attempts.',
       'Input length restrictions and schema enforcement on IndexedDB stores.',
     ],
     productionFix: 'Route Gemini API calls through a Vercel Cloud Function proxy with HTTP Referrer and IP rate limits.',
